@@ -1,10 +1,50 @@
 const express = require('express')
+const path = require('path');
+
+const config = require("./config")
+
+const Database = require("./database")
+const fetcher = require("./fetchData")
+
 const app = express()
 
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname + '/www_files/index.html'));
+});
 
-app.listen(8000, function () {
-  console.log('Example app listening on port 8000!')
-})
+app.use("/css", express.static(__dirname + "/www_files/css"));
+app.use("/fonts", express.static(__dirname + "/www_files/fonts"));
+app.use("/js", express.static(__dirname + "/www_files/js"));
+
+Database.connect().then(db => {
+    app.get("/api/groupSchedule/:group", (req, res) => {
+
+        fetcher.fetchReservationsOfGroup(db, req.params.group).then(reservations => {
+            res.json(reservations);
+        }).catch(err => {
+            res.status(500).end();
+        });
+
+    });
+
+    app.get("/api/groups", function(req,res){
+        db.query("SELECT * FROM existing_groups", function(err, rows, fields){
+            var groups = [];
+            for(var groupCount = 0;groupCount<rows.length;groupCount++){
+                groups.push(rows[groupCount].name);
+            }
+            res.end(JSON.stringify(groups));
+        });
+    });
+
+    app.get('/refresh', (req, res) => {
+        updater.refreshCalendars(db);
+    });
+
+    //update things once per day
+    setInterval(function(){
+        updater.refreshCalendars(db);
+    },86400000);
+});
+
+app.listen(config.desired_port, () => console.log('App listening on port ' + config.desired_port))

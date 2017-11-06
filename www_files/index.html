@@ -1,0 +1,108 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+      <link rel="stylesheet" type="text/css" href="css/nouislider.css">
+      <link rel="stylesheet" type="text/css" href="css/fullcalendar.min.css">
+      <link rel="stylesheet" type="text/css" href="css/fullcal_material.css">
+
+      <title>HAMK calendar</title>
+      <style>
+      body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      main {
+        flex: 1 0 auto;
+      }
+      .autocomplete-content{
+        position: relative !important;
+      }
+      
+      </style>
+    </head>
+
+    <body>
+       <header>
+        <nav class="indigo" style="z-index:5000">
+          <div class="container" style="height:100%">
+            <div class="nav-wrapper">
+              <div class="container">
+                <a href="/#home" class="brand-logo">HAMK schedule tool</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <header style="position: relative">
+        <nav class="indigo darken-1" style="z-index:5000">
+          <div class="container" style="height:100%">
+            <div class="nav-wrapper">
+              <form id="searchForm" action="#">
+                <div class="input-field">
+                  <input id="search" type="search" required autocomplete="off" style="margin: 0">
+                  <label class="label-icon" for="search" style="top: -10px"><i class="material-icons">search</i></label>
+                  <i class="material-icons" id="cancelSearch">close</i>
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header><br/>
+      <div class="container">
+        <div class="col s12">
+          <div id="fullcal">
+            <h1>Start by searching groups</h1>
+          </div>
+        </div>
+
+      </div>
+      <div id="eventContent" class="modal" style="display:none;">
+        <div class="modal-content">
+          <h4>Event information</h4>
+          <p>Start: <span id="startTime"></span></p>
+          <p>End: <span id="endTime"></span></p>
+          <p id="eventInfo"></p>
+        </div>
+      </div>
+       <footer class="page-footer indigo">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">HAMK schedule viewer</h5>
+              <p class="grey-text text-lighten-4">feel free to copy</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              :)
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+          this page uses hamk open data API for the information
+          </div>
+        </div>
+      </footer>
+      <!--JAVASCRIPTS-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+      <script type="text/javascript" src="js/nouislider.min.js"></script>
+      <script type="text/javascript" src="js/Chart.min.js"></script>
+      <script type="text/javascript" src="js/moment.js"></script>
+      <script type="text/javascript" src="js/fullcalendar.min.js"></script>
+      <script type="text/javascript" src="js/index.js"></script>
+      <script type="text/javascript" id="cookiebanner"
+  src="https://cdnjs.cloudflare.com/ajax/libs/cookie-banner/1.0.0/cookiebanner.min.js"></script>
+    </body>
+  </html>
+        
