@@ -5,6 +5,7 @@ const config = require("./config")
 
 const Database = require("./database")
 const fetcher = require("./fetchData")
+const updater = require("./updater")
 
 const app = express()
 
@@ -22,10 +23,18 @@ Database.connect().then(db => {
         fetcher.fetchReservationsOfGroup(db, req.params.group).then(reservations => {
             res.json(reservations);
         }).catch(err => {
-            res.status(500).end();
+            res.status(500).end("EWWOW");
         });
 
     });
+    app.get("/api/resource/:resourceId", (req, res)=>{
+        fetcher.getResource(db, req.params.resourceId).then(resource => {
+            res.json(resource);
+        }).catch(err => {
+            res.status(500).end("error occured with resource gathering");
+        })
+    });
+
 
     app.get("/api/groups", function(req,res){
         db.query("SELECT * FROM existing_groups", function(err, rows, fields){
@@ -37,8 +46,10 @@ Database.connect().then(db => {
         });
     });
 
+
     app.get('/refresh', (req, res) => {
         updater.refreshCalendars(db);
+        res.end("update done");
     });
 
     //update things once per day

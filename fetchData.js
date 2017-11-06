@@ -1,7 +1,10 @@
 function fetchReservationsOfGroup(db, groupId) {
     return new Promise((fulfill, reject) => {
         db.query("SELECT reservations.* FROM reservations INNER JOIN resourceReservations ON reservations.id = resourceReservations.reservation INNER JOIN resources ON resourceReservations.resource = resources.id WHERE resources.name = ?", groupId, function (err, reservationRows) {
-            if(err) return reject(err);
+            if (err){
+                console.log(err);
+                return reject(err);
+            } 
 
             const resourcePromises = reservationRows.map(row => {
                 const genericShit = Object.assign({}, row);
@@ -25,7 +28,10 @@ function fetchReservationsOfGroup(db, groupId) {
 function getResourcesOfReservation(db, reservation) {
     return new Promise((fulfill, reject) => {
         db.query("SELECT resources.* FROM resources INNER JOIN resourceReservations ON resources.id = resourceReservations.resource WHERE resourceReservations.reservation = ?", reservation.id, function (err, rows) {
-            if (err) return reject(err);
+            if (err){
+                console.log(err);
+                return reject(err);
+            } 
 
             return fulfill(rows.map(row => {
                 return Object.assign({}, row);
@@ -33,7 +39,20 @@ function getResourcesOfReservation(db, reservation) {
         });
     });
 }
+function getResource(db, resourceId) {
+    return new Promise((fulfill, reject)  => {
+        db.query("SELECT * FROM resources WHERE id = ?", resourceId, function(err, rows){
+            if(err){
+                console.log(err);
+                return reject(err);
+            }
 
+            return fulfill(rows.map(row=>{
+                return Object.assign({}, row);
+            }));
+        });
+    });
+}
 module.exports = {
     fetchReservationsOfGroup,
     getResourcesOfReservation,

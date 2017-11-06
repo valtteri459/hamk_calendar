@@ -13,23 +13,9 @@
       <link rel="stylesheet" type="text/css" href="css/nouislider.css">
       <link rel="stylesheet" type="text/css" href="css/fullcalendar.min.css">
       <link rel="stylesheet" type="text/css" href="css/fullcal_material.css">
+      <link rel="stylesheet" type="text/css" href="css/index.css">
 
       <title>HAMK calendar</title>
-      <style>
-      body {
-        display: flex;
-        min-height: 100vh;
-        flex-direction: column;
-      }
-
-      main {
-        flex: 1 0 auto;
-      }
-      .autocomplete-content{
-        position: relative !important;
-      }
-      
-      </style>
     </head>
 
     <body>
@@ -59,23 +45,24 @@
           </div>
         </nav>
       </header><br/>
+      <main>
       <div class="container">
         <div class="col s12">
           <div id="fullcal">
             <h1>Start by searching groups</h1>
           </div>
         </div>
-
       </div>
       <div id="eventContent" class="modal" style="display:none;">
-        <div class="modal-content">
-          <h4>Event information</h4>
-          <p>Start: <span id="startTime"></span></p>
-          <p>End: <span id="endTime"></span></p>
-          <p id="eventInfo"></p>
+        <div class="modal-content" id="modalBody">
+          
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">close</a>
         </div>
       </div>
-       <footer class="page-footer indigo">
+      </main>
+      <footer class="page-footer indigo">
         <div class="container">
           <div class="row">
             <div class="col l6 s12">
@@ -92,6 +79,7 @@
           this page uses hamk open data API for the information
           </div>
         </div>
+      
       </footer>
       <!--JAVASCRIPTS-->
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

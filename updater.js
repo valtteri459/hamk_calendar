@@ -1,5 +1,6 @@
 const http = require("https")
 
+const conf = require("./config")
 function refreshCalendars(db) {
     console.log("fetching new reservation schedules from HAMK API");
     var time = new Date();
@@ -152,13 +153,7 @@ function refreshCalendars(db) {
 
 
 
-
-
-
-                                    /*************************************************************************************************************************/
-                                    for (var j = 0; j < creservation.resources.length; j++) {
-                                        var cresource = creservation.resources[j];
-                                        //if resource doesn't exist, create it, if it does and something has changed, update it
+                                    function insertResource(cresource){
                                         if (dbResources[cresource.id] == undefined) {
 
                                             if (insertedIDs.indexOf(cresource.id) < 0) {
@@ -169,6 +164,8 @@ function refreshCalendars(db) {
                                                 }
                                                 else {
                                                     parentIfExists = cresource.parent.id;
+                                                    console.log("adding parent "+cresource.parent.id);
+                                                    insertResource(cresource.parent);
                                                 }
                                                 insertResources.push([
                                                     cresource.id,
@@ -181,6 +178,14 @@ function refreshCalendars(db) {
                                                 gained++;
                                             }
                                         }
+                                    }
+
+
+                                    /*************************************************************************************************************************/
+                                    for (var j = 0; j < creservation.resources.length; j++) {
+                                        var cresource = creservation.resources[j];
+                                        //if resource doesn't exist, create it, if it does and something has changed, update it
+                                        insertResource(cresource);
                                         /*************************************************************************************************************************/
                                         //re-add all the dependencies, lightweight enough operation on the DB to do separately from the rest
                                         insertConns.push([creservation.id, cresource.id, startDate, endDate]);
