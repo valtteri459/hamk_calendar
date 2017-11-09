@@ -7,12 +7,12 @@ function fetchReservationsOfGroup(db, groupId) {
             } 
 
             const resourcePromises = reservationRows.map(row => {
-                const genericShit = Object.assign({}, row);
+                const mystery = Object.assign({}, row);
                 return getResourcesOfReservation(db, row);
             });
 
             // Fetch all resources
-            // Return array. Each item fuck thattgfhshgosf
+            // append resources to the reservations
             Promise.all(resourcePromises).then(resourceArr => {
                 resourceArr.forEach((resourcesOfReservation, reservationIndex) => {
                     reservationRows[reservationIndex].resources = resourcesOfReservation;
@@ -53,49 +53,26 @@ function getResource(db, resourceId) {
         });
     });
 }
+function getGroups(db, resourceId){
+    return new Promise((fulfill, reject) =>{
+        db.query("SELECT * FROM existing_groups", function(err, rows, fields){
+            if(err){
+                console.log(err);
+                return(reject(err));
+            }
+            var groups = [];
+            for(var groupCount = 0;groupCount<rows.length;groupCount++){
+                groups.push(rows[groupCount].name);
+                
+            }
+            return fulfill(groups);
+            
+        });
+    });
+}
 module.exports = {
     fetchReservationsOfGroup,
     getResourcesOfReservation,
+    getResource,
+    getGroups,
 }
-
-/*
-function fetchTimetable() {
-    return fetchReservationsOfGroup().then(reservations => {
-
-    })
-    return new Promise((fulfill, reject) => {
-        // Fetch all reservations of student group
-        
-            if(err){
-                console.log(err);
-            }
-
-					const output = rows.map(function(row) {
-						Object.assign({}, row);
-
-						console.log("A", row);
-
-						db.query("SELECT resources.* FROM resources INNER JOIN resourceReservations ON resources.id = resourceReservations.resource WHERE resourceReservations.reservation = ?", row.id, function(errAgain, rowTwo, colTwo){
-							if(errAgain){
-								console.log(errAgain);
-							}
-
-							//console.log(output[xy],xy);
-							if(rowTwo != undefined){
-								//console.log(rowTwo);
-								output[xy]["resources"] = rowTwo;
-								if(xy == rows.length-1){
-									res.end(JSON.stringify(output));
-								}
-							}else{
-								output[xy]["resources"] = null;
-								if(xy == rows.length-1){
-									res.end(JSON.stringify(output));
-								}
-							}
-						});
-					});
-					
-                });
-            }
-            */
