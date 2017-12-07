@@ -142,65 +142,60 @@ function loadItem(itemId){
 		        	element.click(function() {
 		        		var eventData = event.data;
 		        		if(eventData.id != undefined){
-			        		var tableBody = "";
+									var tableBody = "";
+									var tableData = [];
 			        		for(var i = 0;i<eventData.resources.length;i++){
-			        			tableBody += "<tr><td>"+eventData.resources[i].type+"</td><td>"+eventData.resources[i].code+"</td><td>"+eventData.resources[i].name+"</td></tr>";
-			        		}
-
+										var rType = eventData.resources[i].type;
+										var rName = eventData.resources[i].name;
+										var rCode = eventData.resources[i].code;
+										if(tableData[rType] == undefined){
+											
+											tableData[rType] = [];
+										}
+										var toPut = rCode;
+										if(rCode != rName){
+											toPut += " / "+rName;
+										}
+										tableData[rType].push(toPut);
+									}
+									console.log(tableData);
+									for(var key in tableData){
+										var indx = key;
+										var val = tableData[key];
+										tableBody+="<p><b>"+indx+"</b></p><ul>";
+										for(var i = 0;i<val.length;i++){
+											tableBody+="<li>"+val[i]+"</li>";
+										};
+										tableBody+="</ul>";
+									}
+										
+									//tableBody += "<tr><td>"+eventData.resources[i].type+"</td><td>"+eventData.resources[i].code+"</td><td>"+eventData.resources[i].name+"</td></tr>";
 			        		$("#modalBody").html(`
-			        			<h4>`+event.title+`</h4>
-			        			<table>
-				        			<thead>
-				        				<tr>
-				        					<th>start</th>
-				        					<th>end</th>
-				        				</tr>
-				        			</thead>
-				        			<tbody>
-				        				<tr>
-				        					<td>`+moment(event.start).format('ddd, MMM Do H:mm')+`</td>
-				        					<td>`+moment(event.end).format('ddd, MMM Do H:mm')+`</td>
-				        				</tr>
-				        			</tbody>
-			        			</table>
-			        			<p>`+event.description+`</p>
-			        			<h4>Allocated resources</h4>
-			        			<table>
-				        			<thead>
-				        				<tr>
-				        					<th>Type</th>
-				        					<th>Code</th>
-				        					<th>Name</th>
-				        				</tr>
-				        			</thead>
-				        			<tbody>
-				        				`+tableBody+`
-				        			</tbody>
-			        			</table>
-			        		`);
+									<h4>`+event.title+`</h4>`+
+									"<div class='container'><div class='row'>"+
+									`<div class="col m6 s12">
+										`+event.description+`<br/>
+										start:<br/>   `+moment(event.start).format('ddd, MMM Do H:mm')+`<br/><br/>
+										ending:<br/>    `+moment(event.end).format('ddd, MMM Do H:mm')+` 
+									</div>`+
+									`<div class="col m6 s12">
+									<h5>Resources</h5>
+										`+tableBody+`
+									</div>`
+									
+									+"</div></div>");
 			        	}else{
 			        		var tableContents = "";
 			        		for(var i = 0;i<eventData.SetMenus.length;i++){
-			        			var csetMenu = eventData.SetMenus[i];
+										var csetMenu = eventData.SetMenus[i];
+										tableContents += "<h5>"+csetMenu.Name+"</h5><ul>";
 			        			for(var j = 0;j<csetMenu.Components.length;j++){
-			        				tableContents += "<tr><td>"+csetMenu.Name+"</td><td>"+csetMenu.Components[j]+"</td></tr>";
-			        			}
+											tableContents += "<li>"+csetMenu.Components[j]+"</li>";
+											
+										}
+										tableContents +="</li>";
 			        		}
-			        		$("#modalBody").html(`
-			        			<h4>Ruokailu Visamäen Amicassa</h4>
-			        			<table>
-				        			<thead>
-				        				<tr>
-				        					<th>Ruoka</th>
-				        					<th>Sisältö</th>
-				        				</tr>
-				        			</thead>
-				        			<tbody>
-				        				`+tableContents+`
-				        			</tbody>
-			        			</table>
-			        			
-			        		`);
+			        		$("#modalBody").html(tableContents);
 			        	}
 		            	//$("#eventInfo").html(event.description);
 		            	//("#eventLink").attr('href', event.url);
