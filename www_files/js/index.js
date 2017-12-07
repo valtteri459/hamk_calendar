@@ -63,7 +63,6 @@ function loadItem(itemId){
 				"#009688",
 				"#8bc34a",
 				"#cddc39",
-				"#ffeb3b",
 				"#ffc107",
 				"#ff9800",
 				"#ff5722" 
